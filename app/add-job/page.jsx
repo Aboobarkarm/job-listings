@@ -94,6 +94,14 @@ export default function AddJob() {
               className='border rounded w-full px-3 py-2 mb-2'
               />
             </div>
+            <h3 className='text-2xl mb-5'>Company Info</h3>
+            <div className='mb-4'>
+              <label 
+              htmlFor="company_description"
+              className='block text-gray-700 font-bold mb-2'
+              >
+              </label>
+            </div>
           </form>
         </div>
       </div>
