@@ -14,7 +14,8 @@ export default function AddJob() {
                 Job Type
               </label>
               <select 
-              name="type" id="type"
+              name="type"
+               id="type"
               className='border rounded w-full py-2 px-3'
               required
               >
@@ -97,10 +98,71 @@ export default function AddJob() {
             <h3 className='text-2xl mb-5'>Company Info</h3>
             <div className='mb-4'>
               <label 
-              htmlFor="company_description"
+              htmlFor="company"
               className='block text-gray-700 font-bold mb-2'
               >
+                Company Name
               </label>
+              <input
+               type="text"
+               id='company'
+               name='company'
+               placeholder='Company Name'
+               required
+               className='w-full py-2 px-3 border rounded'
+               />
+            </div>
+            <div className='mb-4'>
+              <label
+               htmlFor="company_decription"
+               className='block text-gray-700 font-bold mb-2'
+              >
+                Company Description
+              </label>
+              <textarea 
+              name="company_description"
+               id="company_description"
+               rows='4'
+               placeholder='What does your company do ?'
+               className='w-full py-2 px-3 border rounded'
+               >
+               </textarea>
+            </div>
+            <div className='mb-4'>
+              <label
+               htmlFor="contact_email"
+               className='block text-gray-700 font-bold mb-2'
+              >
+                Contact Email
+              </label>
+              <input 
+              type="email"
+              id='contact_email'
+              name='contact_email'
+              placeholder='Email address for applications'
+              required
+              className='w-full py-2 px-3 border rounded'
+               />
+            </div>
+            <div className='mb-4'>
+            <label 
+            htmlFor="contact_phone"
+            className='block text-gray-700 font-bold mb-2'
+            >
+            Contact Phone
+            </label>
+            <input
+             type="tel"
+             id='contact_phone'
+             name='contact_phone'
+             placeholder='Optional phone for applications'
+             className='w-full py-2 px-4 border rounded'
+             />
+            </div>
+            <div>
+              <button type='summit' className='bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full w-full'>
+                Add Job
+              </button>
             </div>
           </form>
         </div>
