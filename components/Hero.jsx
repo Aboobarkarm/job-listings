@@ -1,5 +1,6 @@
 
-export default function Hero({ title = 'Become a React Dev', subtitle = 'Find The React Job That Fit Your Skill Set'}) {
+
+export default function Hero({title , description}) {
 
   return (
     <section className='bg-indigo-700 py-20 mb-4'> 
@@ -9,10 +10,11 @@ export default function Hero({ title = 'Become a React Dev', subtitle = 'Find Th
           {title}
         </h1>
         <p className='my-4 text-xl text-white'>
-          {subtitle}
+          {description}
         </p>
       </div>
     </div>
     </section>
   )
-}
+};
+  

@@ -1,5 +1,9 @@
-import Link from 'next/link';
-import Card from './Card';
+import Link from 'next/link'
+import Card from './Card'
+import { IoIosAdd } from "react-icons/io"
+import { CiBoxList } from "react-icons/ci"
+
+
 
 export default function HomeCards() {
   return (
@@ -14,7 +18,10 @@ export default function HomeCards() {
               Browse our React job and start your career today
             </p>
             <Link href={'/jobs'} className='bg-black text-white inline-block rounded-lg px-4 py-2 hover:bg-gray-700'>
+              <div className='flex items-start justify-start'>
+                <CiBoxList size={25} className='mr-2'/>
               Browse Jobs
+              </div>
             </Link>
           </Card>
           <Card bg='bg-indigo-100'>
@@ -25,7 +32,10 @@ export default function HomeCards() {
                List your jobs to find the perfect developer for the role
             </p>
             <Link href={'/add-job'} className='inline-block bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600'>
+            <div className='flex items-start justify-start'>
+             <IoIosAdd size={25} className='mr-2'/>
               Add Job
+              </div>
             </Link>
           </Card>
         </div>
