@@ -53,7 +53,7 @@ export default function NavBar() {
             Home
             </div>
           </Link>
-          <Link href="/jobs" className={`block tracking-wider mt-4  md:mt-0 ${pathname === '/jobs' ? 'font-bold' : ''}`}>
+          <Link href="/jobs-page" className={`block tracking-wider mt-4  md:mt-0 ${pathname === '/jobs' ? 'font-bold' : ''}`}>
             <div className='flex items-start justify-start'>
             <CiBoxList size={25} className='mr-2'/>
             Jobs

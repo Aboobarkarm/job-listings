@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import connectMongoDb from '@/libs/mongodb';
-import Job from '@/models/job';
+import connectMongoDb from "@/libs/mongodb";
+import Job from "@/models/job";
 
 /**
  * @desc Create a new job posting
@@ -8,15 +8,15 @@ import Job from '@/models/job';
  */
 export async function POST(req) {
   try {
-    const body = await req.json(); 
-    await connectMongoDb(); 
+    const body = await req.json();
+    await connectMongoDb();
 
-    const job = new Job(body); 
+    const job = new Job(body);
     await job.save();
 
     return NextResponse.json(
       { success: true, message: "Job created successfully" },
-      { status: 201 } 
+      { status: 201 }
     );
   } catch (error) {
     console.error("Error creating job:", error.message);
@@ -28,17 +28,23 @@ export async function POST(req) {
 }
 
 /**
- * @desc Get all job postings (sorted by newest first)
- * @route GET /api/jobs
+ * @desc Get all job postings (supports optional limit query)
+ * @route GET /api/jobs?limit=3
  */
-export async function GET() {
+export async function GET(req) {
   try {
-    await connectMongoDb()
-    const data = await Job.find().sort({ createdAt: -1 }); 
+    await connectMongoDb();
+
+    // Extract the "limit" query parameter from the request
+    const { searchParams } = new URL(req.url);
+    const limit = searchParams.get("limit") ? parseInt(searchParams.get("limit")) : 0;
+
+    // Fetch jobs with optional limit
+    const data = limit > 0 ? await Job.find().sort({ createdAt: -1 }).limit(limit) : await Job.find().sort({ createdAt: -1 });
 
     return NextResponse.json(
       { success: true, data },
-      { status: 200 } 
+      { status: 200 }
     );
   } catch (error) {
     console.error("Error fetching jobs:", error.message);
@@ -48,4 +54,3 @@ export async function GET() {
     );
   }
 }
-

@@ -1,6 +1,6 @@
 import Hero from '@/components/Hero';
 import HomeCards from '@/components/HomeCards';
-import RecentJobs from '@/components/RecentJobs';
+import JobListings from '@/components/JobListings';
 import ViewAllJobs from '@/components/ViewAllJobs';
 
 
@@ -13,7 +13,7 @@ export default function Home() {
     <>
     <Hero title={title} description={description} />
     <HomeCards />
-    <RecentJobs />
+    <JobListings />
     <ViewAllJobs />
     </>
   );
