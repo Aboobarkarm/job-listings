@@ -86,10 +86,10 @@ export async function PATCH(req, { params }) {
  * @route DELETE /api/jobs
  */
 
-export async function DELETE(req, { params }) {
+export async function DELETE( req, { params }) {
   try {
     const { id } = await params;
-
+    
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json(
         { success: false, message: "Invalid job ID format" },

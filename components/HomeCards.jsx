@@ -17,7 +17,7 @@ export default function HomeCards() {
             <p className='mt-2 mb-4'>
               Browse our React job and start your career today
             </p>
-            <Link href={'/jobs'} className='bg-black text-white inline-block rounded-lg px-4 py-2 hover:bg-gray-700'>
+            <Link href={'/jobs-page'} className='bg-black text-white inline-block rounded-lg px-4 py-2 hover:bg-gray-700'>
               <div className='flex items-start justify-start'>
                 <CiBoxList size={25} className='mr-2'/>
               Browse Jobs

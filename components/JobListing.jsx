@@ -1,17 +1,25 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import Link from "next/link";
+import { ClipLoader } from "react-spinners";
 
 export default function JobListing({ job }) {
   const [expandedJobs, setExpandedJobs] = useState({});
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const toggleDescription = (jobId) => {
     setExpandedJobs((prev) => ({
       ...prev,
       [jobId]: !prev[jobId],
     }));
+  };
+
+  const handleNavigation = (jobId) => {
+    setLoading(true);
+    router.push(`/job-page/${jobId}`);
   };
 
   return (
@@ -42,12 +50,14 @@ export default function JobListing({ job }) {
             <FaMapMarkerAlt className="text-lg" />
             <p className="ml-1">{job.location}</p>
           </div>
-          <Link
-            href={`/jobs/${job._id}`}
-            className="h-[36px] bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg text-center text-sm"
+
+          <button
+            onClick={() => handleNavigation(job._id)}
+            className="h-[36px] flex justify-center items-center bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg text-center text-sm w-[120px]"
+            disabled={loading}
           >
-            Read More
-          </Link>
+            {loading ? <ClipLoader size={20} color="#fff" /> : "Read More"}
+          </button>
         </div>
       </div>
     </div>

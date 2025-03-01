@@ -160,7 +160,7 @@ export default function EditJob() {
              />
             </div>
             <div>
-              <button type='summit' className='bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full w-full'>
+              <button type='summit' className='bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-md w-full'>
                 Add Job
               </button>
             </div>
