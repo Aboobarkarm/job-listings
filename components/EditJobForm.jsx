@@ -1,70 +1,97 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function AddJob() {
+export default function EditJobForm ({ jobId }) {
+  console.log(jobId)
   const [formData, setFormData] = useState({
-    type: "Full-time",
+    type: "",
     title: "",
     description: "",
-    salary: "Under $50k",
+    salary: "",
     location: "",
-    company: "",
-    company_description: "",
-    contact_email: "",
-    contact_phone: "",
+    company: {
+      name: "",
+      description: "",
+    },
+    contact: {
+      email: "",
+      phone: "",
+    },
   });
-
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  // Handle Input Changes
+  // Fetch job details when the component mounts
+  useEffect(() => {
+    const fetchJob = async () => {
+      try {
+        const response = await fetch(`/api/jobs/${jobId.toString()}`);
+        const data = await response.json();
+        if (response.ok) {
+          setFormData(data);
+        } else {
+          setError(data.message || "Failed to fetch job details");
+        }
+      } catch (error) {
+        setError("Error fetching job details");
+      }
+    };
+
+    fetchJob();
+  }, [jobId]);
+
+  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (name.startsWith("company.")) {
+      setFormData((prev) => ({
+        ...prev,
+        company: {
+          ...prev.company,
+          [name.split(".")[1]]: value,
+        },
+      }));
+    } else if (name.startsWith("contact.")) {
+      setFormData((prev) => ({
+        ...prev,
+        contact: {
+          ...prev.contact,
+          [name.split(".")[1]]: value,
+        },
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
-  // Handle Form Submission
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
-    setSuccess(null);
+    setError("");
+    setSuccess("");
 
     try {
-      const res = await fetch("/api/jobs", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          company: { name: formData.company, description: formData.company_description },
-          contact: { email: formData.contact_email, phone: formData.contact_phone },
-        }),
+      const response = await fetch(`/api/jobs/${jobId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
 
-      const result = await res.json();
-    
-      if (res.ok) {
-        setSuccess("Job created successfully!");
-        setFormData({
-          type: "Full-time",
-          title: "",
-          description: "",
-          salary: "Under $50k",
-          location: "",
-          company: "",
-          company_description: "",
-          contact_email: "",
-          contact_phone: "",
-        });
+      const data = await response.json();
+      if (response.ok) {
+        setSuccess("Job updated successfully!");
       } else {
-        throw new Error(result.message || "Failed to create job");
+        setError(data.message || "Failed to update job");
       }
-    } catch (err) {
-      setError(err.message);
+    } catch (error) {
+      setError("An error occurred while updating the job");
     } finally {
       setLoading(false);
     }
@@ -74,17 +101,14 @@ export default function AddJob() {
     <section className="bg-indigo-50">
       <div className="container mx-auto max-w-2xl py-24">
         <div className="bg-white px-6 py-8 rounded-md shadow-md border m-4 md:m-0">
-          <h2 className="text-3xl font-semibold text-center mb-6">Add Job</h2>
+          <h2 className="text-3xl font-semibold text-center mb-6">Edit Job</h2>
 
           {error && <p className="text-red-500 text-center">{error}</p>}
           {success && <p className="text-green-500 text-center">{success}</p>}
 
           <form onSubmit={handleSubmit}>
-            {/* Job Type */}
             <div className="mb-4">
-              <label htmlFor="type" className="font-bold text-gray-700">
-                Job Type
-              </label>
+              <label htmlFor="type" className="font-bold text-gray-700">Job Type</label>
               <select
                 name="type"
                 id="type"
@@ -100,7 +124,6 @@ export default function AddJob() {
               </select>
             </div>
 
-            {/* Job Title */}
             <div className="mb-4">
               <label className="font-bold text-gray-700">Job Listing Name</label>
               <input
@@ -113,7 +136,6 @@ export default function AddJob() {
               />
             </div>
 
-            {/* Description */}
             <div className="mb-4">
               <label className="font-bold text-gray-700">Description</label>
               <textarea
@@ -121,13 +143,11 @@ export default function AddJob() {
                 value={formData.description}
                 onChange={handleChange}
                 rows="4"
-                placeholder="Job duties, expectations, etc."
                 className="border rounded w-full px-3 py-2"
                 required
               ></textarea>
             </div>
 
-            {/* Salary */}
             <div className="mb-4">
               <label className="font-bold text-gray-700">Salary</label>
               <select
@@ -144,7 +164,6 @@ export default function AddJob() {
               </select>
             </div>
 
-            {/* Location */}
             <div className="mb-4">
               <label className="font-bold text-gray-700">Location</label>
               <input
@@ -159,51 +178,47 @@ export default function AddJob() {
 
             <h3 className="text-2xl mb-4">Company Info</h3>
 
-            {/* Company Name */}
             <div className="mb-4">
               <label className="font-bold text-gray-700">Company Name</label>
               <input
                 type="text"
-                name="company"
-                value={formData.company}
+                name="company.name"
+                value={formData.company.name}
                 onChange={handleChange}
                 className="border rounded w-full px-3 py-2"
                 required
               />
             </div>
 
-            {/* Company Description */}
             <div className="mb-4">
               <label className="font-bold text-gray-700">Company Description</label>
               <textarea
-                name="company_description"
-                value={formData.company_description}
+                name="company.description"
+                value={formData.company.description}
                 onChange={handleChange}
                 rows="3"
                 className="border rounded w-full px-3 py-2"
               ></textarea>
             </div>
 
-            {/* Contact Email */}
             <div className="mb-4">
               <label className="font-bold text-gray-700">Contact Email</label>
               <input
                 type="email"
-                name="contact_email"
-                value={formData.contact_email}
+                name="contact.email"
+                value={formData.contact.email}
                 onChange={handleChange}
                 className="border rounded w-full px-3 py-2"
                 required
               />
             </div>
 
-            {/* Contact Phone */}
             <div className="mb-4">
               <label className="font-bold text-gray-700">Contact Phone (Optional)</label>
               <input
                 type="tel"
-                name="contact_phone"
-                value={formData.contact_phone}
+                name="contact.phone"
+                value={formData.contact.phone}
                 onChange={handleChange}
                 className="border rounded w-full px-3 py-2"
               />
@@ -214,11 +229,12 @@ export default function AddJob() {
               disabled={loading}
               className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-sm w-full"
             >
-              {loading ? "Submitting..." : "Add Job"}
+              {loading ? 'Updating...' : 'Update Job'}
             </button>
           </form>
         </div>
       </div>
     </section>
   );
-}
+};
+

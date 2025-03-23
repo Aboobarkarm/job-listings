@@ -41,15 +41,14 @@ export async function GET(req) {
 
     // Fetch jobs with optional limit
     const data = limit > 0 ? await Job.find().sort({ createdAt: -1 }).limit(limit) : await Job.find().sort({ createdAt: -1 });
-
     return NextResponse.json(
       { success: true, data },
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error fetching jobs:", error.message);
+    console.error("Error fetching jobs:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to fetch jobs", error: error.message },
+      { success: false, message: "Failed to fetch jobs", error: error },
       { status: 500 }
     );
   }

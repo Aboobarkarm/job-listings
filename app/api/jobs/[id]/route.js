@@ -49,7 +49,7 @@ export async function PATCH(req, { params }) {
   try {
     const { id } = await params;
     const body = await req.json();
-
+    
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json(
         { success: false, message: "Invalid job ID format" },
@@ -88,7 +88,7 @@ export async function PATCH(req, { params }) {
 
 export async function DELETE( req, { params }) {
   try {
-    const { id } = await params;
+    const { id } = params;
     
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json(

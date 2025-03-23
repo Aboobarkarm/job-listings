@@ -9,7 +9,7 @@ import "react-confirm-alert/src/react-confirm-alert.css";
 export default function JobActions({ jobId }) {
   const router = useRouter();
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-
+  
   const handleDelete = async () => {
     const res = await fetch(`/api/jobs/${jobId}`, { method: "DELETE" });
 
@@ -19,7 +19,7 @@ export default function JobActions({ jobId }) {
       setTimeout(() => {
         setShowSuccessModal(false);
         router.push("/");
-      }, 5000);
+      }, 1000);
     } else {
       alert("Failed to delete the job.");
     }
